@@ -1,0 +1,35 @@
+<h2>Kirjaudu sisään</h2>
+
+{% if form.errors %}
+<p>Käyttäjätunnusta tai salasanaa ei löydy. Yritä uudestaan.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" >
+{% csrf_token %}
+<table>
+<tr>
+    <td>Käyttäjätunnus:</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>Salasana:</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+
+<input type="submit" value="Kirjaudu sisään">
+<input type="hidden" name="next" value="{{ next }}">
+</form>
+
+
+
+
