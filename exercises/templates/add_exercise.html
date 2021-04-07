@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lisää uusi suoritus</h2>
+<form method="POST" class="exercise-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Tallenna</button>
+</form>
+{% endblock %}

@@ -1,0 +1,58 @@
+.page-header {
+    background-color: #5F9EA0;
+    border-bottom: 5px solid white;
+    padding: 20px 20px 20px 40px;
+
+    font: 15px Verdana, Sans-Serif;
+    color:  white;
+    letter-spacing: 2px;
+
+    display: flex;
+    flex-direction:  row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation {
+    background-color: #F08080;
+    border-bottom: 5px solid white;
+    padding: 20px 20px 20px 40px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+.container {
+    background: #F7F7F7;
+    padding: 50px;
+    border-bottom: 2px solid white;
+    font: 15px Verdana, Sans-Serif;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    background: lightgray;
+    font: 1em Verdana, sans-serif;
+    color: white;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    
+}
+
+.link-text {
+    font: 15px Verdana, Sans-Serif;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding-right: 20px;
+}
+

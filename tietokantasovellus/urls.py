@@ -19,10 +19,12 @@ from django.contrib.auth import views as auth_views
 import exercises.views
 
 urlpatterns = [
-    path('', exercises.views.index, name='index'),
     path('admin/', admin.site.urls),
     path('kirjaudu/', auth_views.LoginView.as_view(template_name='login.html')),
 	path('kirjaudu-ulos/', auth_views.LogoutView.as_view(next_page='/')),
 
-    path('salainen/', exercises.views.secret, name='secret')
+    path('', exercises.views.index, name='index'),
+    path('salainen/', exercises.views.secret, name='secret'),
+    path('lisaa-uusi/', exercises.views.addExercise, name='addExercise'),
+    path('oma-sivuni/', exercises.views.myView, name='myView')
 ]
