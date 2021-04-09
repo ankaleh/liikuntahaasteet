@@ -11,28 +11,72 @@ from django.db.models import Sum
 import os
 import sys
 
+@login_required
 def allJson(request):
-    exercises = Exercise.objects.all()
-
     labels = []
     data = []
     #QuerySet  [{'exercise': 'juoksu', 'duration__sum': 2}, {'exercise': 'kävely', 'duration__sum': 1}, {'exercise': 'ryhmäliikunta', 'duration__sum': 1}]:
-    querySet = Exercise.objects.values('exercise').annotate(Sum('duration'))
+    durationPerExercise = Exercise.objects.values('exercise').annotate(Sum('duration'))
 
-    for e in querySet:
-        #print(e, file=sys.stderr)
+    for e in durationPerExercise:
         labels.append(e['exercise'])
         data.append(e['duration__sum'])
 
-    print(labels, file=sys.stderr)
-    print(data, file=sys.stderr)
+    data, labels = zip(*sorted(zip(data, labels)))
 
     return JsonResponse(data={
         'labels': labels,
         'data': data,
     })
-    
 
+@login_required
+def myJson(request):
+    exercisesInAll = []
+    durationsInAll = []
+    datesInAll = []
+
+    minutes = []
+    dates = []
+
+    durations = []
+    exercises = []
+
+    allExercises = Exercise.objects.filter(person__pk=request.user.pk)
+
+    durationPerExercise = Exercise.objects.values('exercise').annotate(Sum('duration')).filter(person__pk=request.user.pk)
+
+    minutesInDay = Exercise.objects.values('date').annotate(Sum('duration')).filter(person__pk=request.user.pk) #8
+    
+    for e in allExercises:
+        exercisesInAll.append(e.exercise)
+        durationsInAll.append(e.duration)
+        datesInAll.append(e.date)
+
+    for i in minutesInDay:
+        dates.append(i['date'])
+        minutes.append(i['duration__sum'])
+    
+    for e in durationPerExercise:
+        exercises.append(e['exercise'])
+        durations.append(e['duration__sum'])
+    
+    return JsonResponse(data={
+        'all': {
+            'exercises': exercisesInAll,
+            'durations': durationsInAll,
+            'dates': datesInAll,
+        },
+        'minutesInDay': {
+            'minutes': minutes,
+            'dates': dates,
+        },
+        'durationPerExercise': {
+            'exercises': exercises,
+            'durations': durations,
+        },
+        
+    })
+    
 def charts(request):
     return render(request, 'charts.html')
 

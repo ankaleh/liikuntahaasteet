@@ -28,6 +28,8 @@ urlpatterns = [
     path('lisaa-uusi/', exercises.views.addExercise, name='addExercise'),
     path('oma-sivuni/', exercises.views.myPage, name='myPage'),
     path('kirjaudutaan/', exercises.views.loggingIn, name='loggingIn'),
+    path('tilastot/', exercises.views.charts, name='charts'),
+
     path('all-json/', exercises.views.allJson, name='allJson'),
-    path('tilastot/', exercises.views.charts, name='charts')
+    path('my-json/', exercises.views.myJson, name='myJson')
 ]

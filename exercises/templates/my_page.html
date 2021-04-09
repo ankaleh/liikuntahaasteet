@@ -1,110 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Lisäämäsi suoritukset</h2>
-{{user.username}}
-<div>
-    {% if exercises %}
-    
-    <table id="table" ></table>
-    <div id="cont" style="width: 800px;"></div>
-    <button class="btn" onclick="drawChart('line')">Viivadiagrammi</button>
+{% load static %}  
+<h2>Tarkastele lisäämiäsi liikuntasuorituksia</h2>
+
+{% if exercises %}
+
+    <div id="container" style="width: 75%;">
+        <div class="info-container">
+            <h4>Viivadiagrammissa näet liikuntapäiväsi ja sen, kuinka kauan olet liikkunut kunakin päivänä yhteensä.</h4>
+            <button class="btn" onclick="getMyJsonAndDraw('line', 'x')">Näytä viivadiagrammi</button>
+        </div>
+
+        <div class="info-container">
+            <h4>Ympyrädiagrammissa näet harrastamiesi eri liikuntalajien osuudet suhteutettuna toisiinsa.</h4>
+            <button class="btn" onclick="getMyJsonAndDraw('pie', 'y')">Näytä ympyrädiagrammi</button>
+        </div>
+
+        <div class="info-container">
+            <h4>Taulukkossa on kaikki lisäämäsi liikuntasuoritukset.</h4>
+            <button class="btn" onclick="getMyJsonAndDraw('table')">Näytä taulukko</button>
+        </div>
+    </div>
+    <!-- <button class="btn" onclick="history.back()">Palaa takaisin</button> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-    <script>
-        var table = document.getElementById("table")
-        table.classList.add("table")
-    
-        var headingRow = document.createElement("tr")
-        headingRow.classList.add("table-heading")
-            
-        var heading1 = document.createElement("th")
-        heading1.classList.add("table")
-        heading1.appendChild(document.createTextNode("Laji"))
-    
-        var heading2 = document.createElement("th")
-        heading2.classList.add("table")
-        heading2.appendChild(document.createTextNode("Kesto"))
-    
-        var heading3 = document.createElement("th")
-        heading3.classList.add("table")
-        heading3.appendChild(document.createTextNode("Ajankohta"))
-    
-        headingRow.appendChild(heading1)
-        headingRow.appendChild(heading2)
-        headingRow.appendChild(heading3)
-    
-        table.appendChild(headingRow)
-            
-        "{% for e in exercises %}"
-            var dataRow = document.createElement("tr")
-            dataRow.classList.add("table-data")
-            var td1 = document.createElement("td")
-            td1.classList.add("table")
-            td1.appendChild(document.createTextNode("{{ e.exercise }}"))
-    
-            var td2 = document.createElement("td")
-            td2.classList.add("table")
-            td2.appendChild(document.createTextNode("{{ e.duration }}"))
-    
-            var td3 = document.createElement("td")
-            td3.classList.add("table")
-            td3.appendChild(document.createTextNode("{{ e.date }}"))
-            
-            dataRow.appendChild(td1)
-            dataRow.appendChild(td2)
-            dataRow.appendChild(td3)
-            table.appendChild(dataRow)  
-        "{% endfor %}"
-
-        function drawChart(type) {
-            var labels = []
-            var data = []
-            "{% for e in exercises %}"
-
-                labels.push("{{ e.date }}")
-                //console.log("{{ e.date }}")
-                data.push("{{ e.duration }}")
-
-            "{% endfor %}"
-
-        var div = document.getElementById("cont")
-        while (div.firstChild) {
-          div.removeChild(div.firstChild)
-        }
-        var ctx = document.createElement("canvas")
-        div.appendChild(ctx)
-        
-        var myChart = new Chart(ctx, {
-        type,
-        data: {
-            labels,
-            datasets: [{
-                label: 'Liikuntaan käytetty aika / päivä',
-                data,
-                backgroundColor: [
-                    '#FFB6C1',
-                    '#20B2AA',
-                    '#FFDAB9',
-                    '#7B68EE',
-                    '#6A5ACD' 
-                ],
-                borderColor: [
-                    '#FFB6C1',
-                    '#20B2AA',
-                    '#FFDAB9',
-                    '#7B68EE',
-                    '#6A5ACD'
-                    
-                ],
-                borderWidth: 1,
-                
-            }]
-        },
-        
-    })}
-    </script>
-    
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     {% endif %}
-</div>
 {% endblock %}
 

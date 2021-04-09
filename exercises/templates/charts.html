@@ -1,79 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div id="container" style="width: 75%;"></div>
-
+{% load static %}  
+<div id="container" style="width: 75%;">
   <div>
-    <h2>Valitse diagrammin muoto</h2>
-    <button class="btn" onclick="drawChart('pie')">Ympyrädiagrammi</button>
-    <button class="btn" onclick="drawChart('bar')">Pylväsdiagrammi</button>
+    <h2>Tarkastele kaikkien työntekijöiden liikkumisesta koostettuja diagrammeja</h2>
+    <div class="info-container">
+      <h4>Ympyrädiagrammissa näet eri liikuntalajien osuudet.</h4>
+      <button class="btn" onclick="getAllJsonAndDraw('pie', 'y')">Näytä ympyrädiagrammi</button>
+    </div>
+    <div class="info-container">
+      <h4>Pylväsdiagrammissa näet eri liikuntalajien osuudet järjestettynä vähiten harrastetusta eniten harrastettuun.</h4>
+      <button class="btn" onclick="getAllJsonAndDraw('bar', 'y')">Näytä pylväsdiagrammi</button>
+    </div>
   </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-  
-  <script>
-    var endpoint = '/all-json'
-    var drawChart = (type) => {
-        $.ajax({
-          method: "GET",
-          url: endpoint,
-          success: function(data) {
-          draw(data, type);
-  
-          },
-          error: function(error_data) {
-            console.log(error_data);
-          }
-        })
-    }
-
-    function draw(data, type) {
-        var div = document.getElementById("container")
-        while (div.firstChild) {
-          div.removeChild(div.firstChild)
-        }
-        var ctx = document.createElement("canvas")
-        div.appendChild(ctx)
-        var labels = data.labels;
-        var data = data.data;
-        var myChart = new Chart(ctx, {
-        type,
-        data: {
-            labels,
-            datasets: [{
-                label: 'Lajiin käytetty aika minutteina / liikuntalaji',
-                data,
-                backgroundColor: [
-                    '#FFB6C1',
-                    '#20B2AA',
-                    '#FFDAB9',
-                    '#7B68EE',
-                    '#6A5ACD' 
-                ],
-                borderColor: [
-                    '#FFB6C1',
-                    '#20B2AA',
-                    '#FFDAB9',
-                    '#7B68EE',
-                    '#6A5ACD'
-                    
-                ],
-                borderWidth: 1,
-                indexAxis: 'y'
-            }]
-        },
-        options: {
-            scales: {
-                /* x: {
-                beginAtZero: true
-                } */
-                
-            }
-        }
-    });
-
-    }
-    </script>
-
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 {% endblock %}

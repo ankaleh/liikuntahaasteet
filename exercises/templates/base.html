@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+    {% load static %}  
     <head>
         <title>Liikuntakalenteri</title>
         <link rel="stylesheet" href="{% static 'css/main.css' %}"> <!-- tähän tyylit -->
@@ -21,28 +22,28 @@
 
     <header class="navigation">
         {% if user.is_authenticated %}
+            <span class="link-text">Kirjautuneena <br> {{user.username}}</span>
             <a class="link-text" href="/lisaa-uusi">Lisää uusi suoritus</a>
             <a class="link-text" href="/tilastot">Tilastot</a>
-            <a class="link-text" href="/oma-sivuni">Oma sivuni</a>
+            <a class="link-text" href="/oma-sivuni">Oma sivu</a>
         {% else %}
             <a class="link-text" href="/">Etusivu</a>
             <a class="link-text" href="/kirjaudu">Kirjaudu sisään</a>
         {% endif %}
     </header>
 
-    <body >
+    <body>
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
         <div>
             {% for message in messages %}
-            <div >
                 <script>
                     var node = document.createTextNode("{{message}}")
                     var element = document.getElementById("notification")
                     "{% if message.tags %}"
-                    element.classList.add("{{ message.tags }}")
+                        element.classList.add("{{ message.tags }}")
                     "{% endif %}"
                     element.appendChild(node)
                     setTimeout(() => {
@@ -50,8 +51,8 @@
                         element.removeChild(node)
                     }, 3000)
                 </script>
-            </div>
             {% endfor %}
         </div>
+        <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     </body>
 </html>
