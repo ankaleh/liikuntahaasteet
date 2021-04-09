@@ -16,7 +16,7 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="/oma-sivuni/">
+<form method="post" action="/kirjaudutaan/">
 {% csrf_token %}
 <table>
 <tr>
@@ -29,7 +29,7 @@
 </tr>
 </table>
 
-<input type="submit" value="Kirjaudu sisään">
+<input type="submit" class="btn" value="Kirjaudu sisään">
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 

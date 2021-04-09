@@ -8,21 +8,50 @@
 
     <header class="page-header">
         <h2>Meillä liikutaan!</h2>
-        <form action='/kirjaudu-ulos/' method="POST">
-			{% csrf_token %}
-            <input type="submit" class="btn" value="Kirjaudu ulos"/>
-        </form>
+        {% if user.is_authenticated %}
+            <form action='/kirjaudu-ulos/' method="POST">
+			    {% csrf_token %}
+                <input type="submit" class="btn" value="Kirjaudu ulos"/>
+            </form>
+        {% endif %}
+    </header>
+    <header>
+        <p id="notification"></p>
     </header>
 
     <header class="navigation">
-        <a class="link-text" href="/">Etusivu</a>
-        <a class="link-text" href="/lisaa-uusi">Lisää uusi suoritus</a>
+        {% if user.is_authenticated %}
+            <a class="link-text" href="/lisaa-uusi">Lisää uusi suoritus</a>
+            <a class="link-text" href="/tilastot">Tilastot</a>
+            <a class="link-text" href="/oma-sivuni">Oma sivuni</a>
+        {% else %}
+            <a class="link-text" href="/">Etusivu</a>
+            <a class="link-text" href="/kirjaudu">Kirjaudu sisään</a>
+        {% endif %}
     </header>
 
     <body >
         <div class="container">
             {% block content %}
             {% endblock %}
+        </div>
+        <div>
+            {% for message in messages %}
+            <div >
+                <script>
+                    var node = document.createTextNode("{{message}}")
+                    var element = document.getElementById("notification")
+                    "{% if message.tags %}"
+                    element.classList.add("{{ message.tags }}")
+                    "{% endif %}"
+                    element.appendChild(node)
+                    setTimeout(() => {
+                        element.removeAttribute("class")
+                        element.removeChild(node)
+                    }, 3000)
+                </script>
+            </div>
+            {% endfor %}
         </div>
     </body>
 </html>
