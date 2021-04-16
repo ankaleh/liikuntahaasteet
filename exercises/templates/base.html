@@ -24,6 +24,7 @@
         {% if user.is_authenticated %}
             <span class="link-text">Kirjautuneena <br> {{user.username}}</span>
             <a class="link-text" href="/lisaa-uusi">Lisää uusi suoritus</a>
+            <a class="link-text" href="/haasta">Haasta</a>
             <a class="link-text" href="/tilastot">Tilastot</a>
             <a class="link-text" href="/oma-sivuni">Oma sivu</a>
         {% else %}
@@ -43,12 +44,17 @@
                     var node = document.createTextNode("{{message}}")
                     var element = document.getElementById("notification")
                     "{% if message.tags %}"
-                        element.classList.add("{{ message.tags }}")
+                        div = document.createElement("div")
+                        div.setAttribute("id", "{{ message.tags }}")
+                        div.classList.add("{{ message.tags }}")
+                        div.appendChild(node)
+                        element.appendChild(div)
                     "{% endif %}"
-                    element.appendChild(node)
                     setTimeout(() => {
-                        element.removeAttribute("class")
-                        element.removeChild(node)
+                        while (element.firstChild) {
+                            element.removeAttribute("class")
+                            element.removeChild(element.firstChild)
+                        }
                     }, 3000)
                 </script>
             {% endfor %}

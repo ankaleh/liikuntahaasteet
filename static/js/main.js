@@ -9,17 +9,17 @@ var myFunction = (endpoint) => {
     })
 }
 
-var getMyJsonAndDraw = (type, indexAxis) => {
+var getMyJsonAndDraw = (type, indexAxis, backTo) => {
     $.ajax({
         method: "GET",
         url: '/my-json',
         success: function(data) {
             if (type==='line') {
-                draw(data.minutesInDay['dates'], data.minutesInDay['minutes'], type, indexAxis)
+                draw(data.minutesInDay['dates'], data.minutesInDay['minutes'], type, indexAxis, backTo)
             } else if (type==='pie') {
-                draw(data.durationPerExercise['exercises'], data.durationPerExercise['durations'], type, indexAxis)
+                draw(data.durationPerExercise['exercises'], data.durationPerExercise['durations'], type, indexAxis, backTo)
             } else {
-                getTable(data.all)
+                getTable(data.all, backTo)
             }
         },
         error: function(error_data) {
@@ -28,12 +28,12 @@ var getMyJsonAndDraw = (type, indexAxis) => {
     })
 }
 
-var getAllJsonAndDraw = (chartType, indexAxis) => {
+var getAllJsonAndDraw = (chartType, indexAxis, backTo) => {
     $.ajax({
     method: "GET",
     url: '/all-json',
     success: function(data) {
-        draw(data.labels, data.data, chartType, indexAxis);
+        draw(data.labels, data.data, chartType, indexAxis, backTo);
         },
         error: function(error_data) {
             console.log(error_data);
@@ -41,8 +41,8 @@ var getAllJsonAndDraw = (chartType, indexAxis) => {
     })
 }
 
-var draw = (labels, data, type, indexAxis) => {
-    var div = document.getElementById("container")
+var draw = (labels, data, type, indexAxis, backTo) => {
+    var div = document.getElementById("diagrams")
     while (div.firstChild) {
         div.removeChild(div.firstChild)
     }
@@ -50,7 +50,7 @@ var draw = (labels, data, type, indexAxis) => {
     var backButton = document.createElement("button")
     backButton.classList.add("btn")
     backButton.appendChild(document.createTextNode("Palaa takaisin"))
-    backButton.addEventListener("click", () => history.back())
+    backButton.addEventListener("click", () => history.go(backTo))
     div.appendChild(ctx)
     div.appendChild(backButton)
 
@@ -101,15 +101,15 @@ var draw = (labels, data, type, indexAxis) => {
     })
 }
 
-var getTable = (all) => {
-    var div = document.getElementById("container")
+var getTable = (all, backTo) => {
+    var div = document.getElementById("diagrams")
     while (div.firstChild) {
         div.removeChild(div.firstChild)
     }
     var backButton = document.createElement("button")
     backButton.classList.add("btn")
     backButton.appendChild(document.createTextNode("Palaa takaisin"))
-    backButton.addEventListener("click", () => history.back())
+    backButton.addEventListener("click", () => history.go(backTo))
     var table = document.createElement("table")
     table.classList.add("table")
     div.appendChild(table)

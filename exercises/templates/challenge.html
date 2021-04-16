@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Haasta työtoverisi tai itsesi liikkumaan!</h2>
+<form method="POST" class="challenge-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Tallenna</button>
+</form>
+
+{% endblock %}

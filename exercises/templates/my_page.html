@@ -2,30 +2,121 @@
 
 {% block content %}
 {% load static %}  
-<h2>Tarkastele lisäämiäsi liikuntasuorituksia</h2>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-{% if exercises %}
+{% if challenges %}
+    <h2>Haasteet, joissa olet osallisena</h2>
+            {% for c in challenges %}
+                <div class="challenge-container">
+                    <div class="column">
+                    {% if c.challengedBy.id == user.id %}
+                        <h3>Lähetit itse haasteen</h3>
+                        <p>Haastettu: {{ c.personChallenged }}</p>
+                    {% else %}
+                        <h3>{{ c.challengedBy }} haastoi sinut</h3>
+                    {% endif %}
+                    <p>Laji: {{ c.exercise }},</p>
+                    <p>Tavoite: {{ c.duration }} minuuttia</p>
+                    <p>Ajanjakso: {{ c.dateFrom }} - {{ c.dateTo }} </p>
+                    </div>
+                    <button class="btn">Poista haaste</button>
+                    <div id="{{ c.id }}" class="pies"></div>
+                </div>
+            {% endfor %}
+{% endif %}
 
-    <div id="container" style="width: 75%;">
-        <div class="info-container">
-            <h4>Viivadiagrammissa näet liikuntapäiväsi ja sen, kuinka kauan olet liikkunut kunakin päivänä yhteensä.</h4>
-            <button class="btn" onclick="getMyJsonAndDraw('line', 'x')">Näytä viivadiagrammi</button>
-        </div>
+{% if progression %}
+    {% for dictionary in progression %}
+         <script>
+            var div = document.getElementById('{{dictionary.challenge_id}}')
+            var divMyChart = document.createElement("div")
+            var node = document.createTextNode("Oma edistymisesi:")
+            divMyChart.setAttribute("id", "myChart")
+            var ctx = document.createElement("canvas")
+            divMyChart.appendChild(ctx)
+            div.appendChild(node)
+            div.appendChild(divMyChart)
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Suoritettu', 'Jäljellä'],
+                    datasets: [{
+                        label: 'Haasteesta suoritettu',
+                        data: ['{{dictionary.done}}', '{{dictionary.to_do}}'],
+                        backgroundColor: [
+                            '#20B2AA',
+                            '#FFB6C1',
+                        ],
+                        borderColor: [
+                            '#20B2AA',
+                            '#FFB6C1',
+                        ],
+                        borderWidth: 1,
+                        indexAxis: 'y'
+                    }]
+                },
+            })
+        </script>
+    {% endfor %}
+{% endif %}
 
-        <div class="info-container">
-            <h4>Ympyrädiagrammissa näet harrastamiesi eri liikuntalajien osuudet suhteutettuna toisiinsa.</h4>
-            <button class="btn" onclick="getMyJsonAndDraw('pie', 'y')">Näytä ympyrädiagrammi</button>
-        </div>
-
-        <div class="info-container">
-            <h4>Taulukkossa on kaikki lisäämäsi liikuntasuoritukset.</h4>
-            <button class="btn" onclick="getMyJsonAndDraw('table')">Näytä taulukko</button>
-        </div>
+{% if progressionOther %}
+    {% for dictionary in progressionOther %}
+         <script>
+            var div = document.getElementById('{{dictionary.challenge_id}}')
+            var divChartOther = document.createElement("div")
+            var node = document.createTextNode("Haastetun tai haastajan edistyminen:")
+            divChartOther.setAttribute("id", "chartOther")
+            var ctx = document.createElement("canvas")
+            divChartOther.appendChild(ctx)
+            div.appendChild(node)
+            div.appendChild(divChartOther)
+            var chartOther = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Suoritettu', 'Jäljellä'],
+                    datasets: [{
+                        label: 'Haasteesta suoritettu',
+                        data: ['{{dictionary.done}}', '{{dictionary.to_do}}'],
+                        backgroundColor: [
+                            '#20B2AA',
+                            '#FFB6C1',
+                        ],
+                        borderColor: [
+                            '#20B2AA',
+                            '#FFB6C1',
+                        ],
+                        borderWidth: 1,
+                        indexAxis: 'y'
+                    }]
+                },
+            })
+        </script>
+    {% endfor %}
+{% endif %}
+<div id="diagrams" style="width: 75%;">
+    <h2>Tarkastele lisäämiäsi liikuntasuorituksia</h2>
+    <div class="info-container">
+        <h4>Viivadiagrammissa näet liikuntapäiväsi ja sen, kuinka kauan olet liikkunut kunakin päivänä yhteensä.</h4>
+        <button class="btn" onclick="getMyJsonAndDraw('line', 'x', '/oma-sivuni')">Näytä viivadiagrammi</button>
     </div>
-    <!-- <button class="btn" onclick="history.back()">Palaa takaisin</button> -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-    {% endif %}
+
+    <div class="info-container">
+        <h4>Ympyrädiagrammissa näet harrastamiesi eri liikuntalajien osuudet suhteutettuna toisiinsa.</h4>
+        <button class="btn" onclick="getMyJsonAndDraw('pie', 'y', '/oma-sivuni')">Näytä ympyrädiagrammi</button>
+    </div>
+
+    <div class="info-container">
+        <h4>Taulukossa on kaikki lisäämäsi liikuntasuoritukset.</h4>
+        <button class="btn" onclick="getMyJsonAndDraw('table', '/oma-sivuni')">Näytä taulukko</button>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 {% endblock %}
 
+<!-- tämä muutettava myös kirjaudu ulos -lomakkeeseen 
+                    <form action="{% url 'remove-challenge' challenge.id %}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn">Poista haaste</button>
+                </form> -->

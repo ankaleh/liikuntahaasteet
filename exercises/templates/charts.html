@@ -2,16 +2,16 @@
 
 {% block content %}
 {% load static %}  
-<div id="container" style="width: 75%;">
+<div id="diagrams" style="width: 75%;">
   <div>
     <h2>Tarkastele kaikkien työntekijöiden liikkumisesta koostettuja diagrammeja</h2>
     <div class="info-container">
       <h4>Ympyrädiagrammissa näet eri liikuntalajien osuudet.</h4>
-      <button class="btn" onclick="getAllJsonAndDraw('pie', 'y')">Näytä ympyrädiagrammi</button>
+      <button class="btn" onclick="getAllJsonAndDraw('pie', 'y', '/tilastot')">Näytä ympyrädiagrammi</button>
     </div>
     <div class="info-container">
       <h4>Pylväsdiagrammissa näet eri liikuntalajien osuudet järjestettynä vähiten harrastetusta eniten harrastettuun.</h4>
-      <button class="btn" onclick="getAllJsonAndDraw('bar', 'y')">Näytä pylväsdiagrammi</button>
+      <button class="btn" onclick="getAllJsonAndDraw('bar', 'y', '/tilastot')">Näytä pylväsdiagrammi</button>
     </div>
   </div>
 </div>

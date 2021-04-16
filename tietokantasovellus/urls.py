@@ -26,10 +26,12 @@ urlpatterns = [
     path('', exercises.views.start, name='start'),
     path('salainen/', exercises.views.secret, name='secret'),
     path('lisaa-uusi/', exercises.views.addExercise, name='addExercise'),
+    path('haasta/', exercises.views.challenge, name='challenge'),
     path('oma-sivuni/', exercises.views.myPage, name='myPage'),
     path('kirjaudutaan/', exercises.views.loggingIn, name='loggingIn'),
     path('tilastot/', exercises.views.charts, name='charts'),
 
     path('all-json/', exercises.views.allJson, name='allJson'),
-    path('my-json/', exercises.views.myJson, name='myJson')
+    path('my-json/', exercises.views.myJson, name='myJson'),
+    path('remove-challenge/<int:challenge_id>', exercises.views.removeChallenge, name='removeChallenge'),
 ]
