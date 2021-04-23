@@ -8,7 +8,7 @@
     </head>
 
     <header class="page-header">
-        <h2>Meillä liikutaan!</h2>
+        <h2>Työpaikan sähköinen liikuntakalenteri</h2>
         {% if user.is_authenticated %}
             <form action='/kirjaudu-ulos/' method="POST">
 			    {% csrf_token %}
@@ -30,6 +30,7 @@
         {% else %}
             <a class="link-text" href="/">Etusivu</a>
             <a class="link-text" href="/kirjaudu">Kirjaudu sisään</a>
+            <a class="link-text" href="/rekisteroidy">Rekisteröidy</a>
         {% endif %}
     </header>
 

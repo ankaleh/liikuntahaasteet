@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('kirjaudu/', auth_views.LoginView.as_view(template_name='login.html')),
 	path('kirjaudu-ulos/', auth_views.LogoutView.as_view(next_page='/')),
+    
 
     path('', exercises.views.start, name='start'),
     path('salainen/', exercises.views.secret, name='secret'),
@@ -30,6 +31,7 @@ urlpatterns = [
     path('oma-sivuni/', exercises.views.myPage, name='myPage'),
     path('kirjaudutaan/', exercises.views.loggingIn, name='loggingIn'),
     path('tilastot/', exercises.views.charts, name='charts'),
+    path('rekisteroidy', exercises.views.signup, name='signup'),
 
     path('all-json/', exercises.views.allJson, name='allJson'),
     path('my-json/', exercises.views.myJson, name='myJson'),

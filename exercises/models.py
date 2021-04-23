@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
 # Create your models here.
 
 class Exercise(models.Model):
@@ -9,17 +9,6 @@ class Exercise(models.Model):
     exercise = models.TextField(max_length=30)
     duration = models.IntegerField()
     date = models.DateField()
-
-EXERCISES = [
-    ('juoksu', 'juoksu'), 
-    ('kävely', 'kävely'),
-    ('kuntosaliliikunta', 'kuntosaliliikunta'),
-    ('ryhmäliikunta', 'ryhmäliikunta'),
-    ('luistelu', 'luistelu'),
-    ('hiihto', 'hiihto'),
-    ('jääkiekko', 'jääkiekko'),
-    ('muu', 'muu')
-]
 
 class Challenge(models.Model):
     personChallenged = models.ForeignKey(User, on_delete=models.CASCADE, related_name='personChallenged')
@@ -29,45 +18,23 @@ class Challenge(models.Model):
     dateFrom = models.DateField()
     dateTo = models.DateField()
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
+    def __str__(self):
+        return f"{self.personChallenged.first_name}"
 
-class ExerciseForm(forms.ModelForm):
-    class Meta:
-        model = Exercise
-        fields = ('exercise', 'duration', 'date')
-        labels = {
-            'exercise':'Laji',
-            'duration':'Suorituksen kesto minuutteina',
-            'date':'Ajankohta'
-        }
-        help_texts = {
-            'exercise':'Valitse laji alaspudotusvalikosta.'
-        }
+class Completer(models.Model):
+    person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='completer')
+    def __str__(self):
+        return f"{self.person.first_name}"
 
-        widgets = {
-            'exercise': forms.Select(choices=EXERCISES),
-            'date': DateInput()
-        }
+class EmployerChallenge(models.Model):
+    exercise = models.TextField(max_length=30)
+    duration = models.IntegerField()
+    dateFrom = models.DateField()
+    dateTo = models.DateField()
+    carrot = models.TextField(max_length=50)
+    completers = models.ManyToManyField(Completer, related_name='completers')
 
-class ChallengeForm(forms.ModelForm):
-    class Meta:
-        model = Challenge
-        fields = ('personChallenged', 'exercise', 'duration', 'dateFrom', 'dateTo')
-        labels = {
-            'exercise':'Laji',
-            'duration':'Suorituksen kesto minuutteina',
-            'dateFrom':'Mistä lähtien haaste on voimassa',
-            'dateTo': 'Mihin asti haaste on voimassa',
-            'personChallenged': 'Haastettava'
-        }
-        help_texts = {
-           'personChallenged': 'Valitse alaspudotusvalikosta sen työtoverin nimi, jonka haluat haastaa.'
-        }
-
-        widgets = {
-            'exercise': forms.Select(choices=EXERCISES),
-            'dateTo': DateInput(),
-            'dateFrom': DateInput()
-        }
+    def __str__(self):
+        compls = ', '.join(str(c.person.first_name) for c in self.completers.all())
+        return f"{self.exercise}, {self.dateTo}, {compls}"
 

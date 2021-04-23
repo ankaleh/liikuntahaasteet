@@ -52,12 +52,44 @@
     padding-right: 20px;
 }
 
+.h2-primary {
+    font: 40px Verdana, Sans-Serif;
+    color: #5F9EA0;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.li-primary {
+    color: #F08080; 
+    font: bold 30px Helvetica, Sans-Serif; 
+    letter-spacing: 2px;
+    padding: 10px;
+}
+
 .success {
     color:#FFFFFF;
     font: 15px Verdana, sans-serif;
     font-weight: bold;
     letter-spacing: 2px;  
-    background-color:coral;
+    background-color:rgb(7, 184, 60);
+
+    height: 70px;
+    padding: 5px;
+
+    border-bottom: 20px solid white;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    color:#FFFFFF;
+    font: 15px Verdana, sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px;  
+    background-color: red;
 
     height: 70px;
     padding: 5px;
@@ -114,17 +146,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    
+    justify-content: space-between;   
 }
 
-/* .challenge-container {
+.employer-challenge-container {
     border: 1.5px solid grey;
-    padding: 15px;
-    margin: 15px;
-    width: 500px;
-    height: 500px;
-    border-radius: 500px;
+    padding: 10px;
+    margin: 10px;
+    width: 600px;
+    height: 600px;
+    border-radius: 600px;
     align-items: center;
     justify-content: center;
 
@@ -134,7 +165,7 @@
 
     display: flex;
     flex-direction: column;
-} */
+}
 
 .challenge-container {
     border: 1.5px solid grey;

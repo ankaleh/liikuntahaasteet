@@ -5,25 +5,44 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
+<h2 class="h2-primary">Haasteet</h2>
+{% if employerChallenge %}
+    <h3>Työpaikan yhteinen haaste</h3>
+    <div class="employer-challenge-container">
+        <p>Laji: {{ employerChallenge.exercise }},</p>
+        <p>Tavoite: {{ employerChallenge.duration }} minuuttia</p>
+        <p>Ajanjakso: {{ employerChallenge.dateFrom }} - {{ employerChallenge.dateTo }} </p>
+        <p>PALKINTO: {{ employerChallenge.carrot }}</p>
+        <div id="employer-challenge"></div>
+    </div>
+{% else %}
+    <h3>Tällä hetkellä ei ole käynnissä yhtään työpaikan yhteistä haastetta</h3>
+{% endif %}
+
 {% if challenges %}
-    <h2>Haasteet, joissa olet osallisena</h2>
+    <h3>Muut haasteet, joissa olet osallisena</h3>
             {% for c in challenges %}
                 <div class="challenge-container">
                     <div class="column">
                     {% if c.challengedBy.id == user.id %}
                         <h3>Lähetit itse haasteen</h3>
-                        <p>Haastettu: {{ c.personChallenged }}</p>
+                        <p>Haastettu: {{ c.personChallenged.first_name }}</p>
                     {% else %}
-                        <h3>{{ c.challengedBy }} haastoi sinut</h3>
+                        <h3>{{ c.challengedBy.first_name }} haastoi sinut</h3>
                     {% endif %}
                     <p>Laji: {{ c.exercise }},</p>
                     <p>Tavoite: {{ c.duration }} minuuttia</p>
                     <p>Ajanjakso: {{ c.dateFrom }} - {{ c.dateTo }} </p>
                     </div>
-                    <button class="btn">Poista haaste</button>
+                    <form action="{% url 'removeChallenge' c.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn">Poista haaste</button>
+                    </form>
                     <div id="{{ c.id }}" class="pies"></div>
-                </div>
+                 </div>
             {% endfor %}
+{% else %}
+    <h3>Sinua ei ole haastettu tai et ole itse haastanut ketään. Voit lisätä haasteen itsellesi tai työtoverillesi siirtymällä valikon kautta sivulle Haasta.</h3>
 {% endif %}
 
 {% if progression %}
@@ -95,6 +114,8 @@
         </script>
     {% endfor %}
 {% endif %}
+
+<h2 class="h2-primary">Liikuntasuorituksesi</h2>
 <div id="diagrams" style="width: 75%;">
     <h2>Tarkastele lisäämiäsi liikuntasuorituksia</h2>
     <div class="info-container">
@@ -114,9 +135,3 @@
 </div>
 <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 {% endblock %}
-
-<!-- tämä muutettava myös kirjaudu ulos -lomakkeeseen 
-                    <form action="{% url 'remove-challenge' challenge.id %}" method="POST">
-                    {% csrf_token %}
-                    <button class="btn">Poista haaste</button>
-                </form> -->
