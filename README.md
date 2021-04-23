@@ -4,6 +4,8 @@ Helsingin yliopiston tietojenkäsittelytieteen aineopintojen Tietokantasovellus-
 
 ## Työyhteisön sähköinen liikuntakalenteri -sovellus
 
+* [Herokussa käynnissä olevaan sovellukseen](https://blooming-refuge-43681.herokuapp.com/)
+
 * Sovelluksen avulla työnantaja voi järjestää liikuntakampanjoita (esittää haasteen ja palkinnon), ja työntekijät voivat haastaa toisiaan tai itsensä sekä seurata edistymistään eri haasteiden suhteen.
 
 * Pääkäyttäjä voi lisätä haasteen ja nähdä, ketkä ovat täyttäneet haasteen. Pääkäyttäjän sivut ovat polussa /admin. Testipääkäyttäjän kayttäjätunnus on paulapääkäyttajä ja salasana testipääkäyttäjä.
