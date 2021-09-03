@@ -6,4 +6,4 @@ Sovellus on Helsingin yliopiston tietojenkäsittelytieteen aineopintojen Tietoka
 
 ## Dokumentaatio
 
-[Käyttöohjeet](./docs/user_guidelines.md)
+[Käyttöohjeet](./docs/application.md)
